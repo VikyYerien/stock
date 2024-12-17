@@ -1,0 +1,60 @@
+<div class="container pt-5">
+    <div class="row">
+      <div class="col-12 col-lg-8 offset-lg-2">
+        <form [formGroup]="discountForm" (ngSubmit)="onSubmit()" novalidate>
+  
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" id="name" class="form-control" formControlName="name"
+              [ngClass]="{ 'is-invalid': f['name'].invalid && f['name'].touched }" />
+            <div *ngIf="f['name'].invalid && f['name'].touched" class="invalid-feedback">
+              El nombre es obligatorio y debe tener al menos 1 caracter.
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea id="description" class="form-control" formControlName="description"
+              [ngClass]="{ 'is-invalid': f['description'].invalid && f['description'].touched }"></textarea>
+            <div *ngIf="f['description'].invalid && f['description'].touched" class="invalid-feedback">
+              La descripción es obligatoria y debe tener al menos 10 caracteres.
+            </div>
+          </div>
+  
+          <div *ngIf="discountForm.errors?.['atLeastOneRequired'] && 
+              (f['percentage'].touched || ammountGroup.touched)" 
+              class="text-danger">
+            Debe completar al menos el campo porcentaje o ambos campos de monto.
+          </div>
+  
+          <div class="mb-3">
+            <label for="percentage" class="form-label">Porcentaje %</label>
+            <input id="percentage" class="form-control" formControlName="percentage"
+              [ngClass]="{ 'is-invalid': f['percentage'].invalid && f['percentage'].touched }">
+          </div>
+  
+          <label for="currency" class="form-label">Monto</label>
+          <div class="mb-3 input-group" formGroupName="ammountGroup">
+            <select id="currency" class="form-select" formControlName="currency"
+              [ngClass]="{ 'is-invalid': ammountGroup.hasError('incompleteAmmount') && ammountGroup.touched }">
+              <option value="">Selecciona la moneda</option>
+              <option *ngFor="let type of currencies" [value]="type">{{ type }}</option>
+            </select>
+  
+            <input id="ammount" type="text" class="form-control" formControlName="ammount"
+              [ngClass]="{ 'is-invalid': ammountGroup.hasError('incompleteAmmount') && ammountGroup.touched }">
+            <div *ngIf="ammountGroup.hasError('incompleteAmmount') && ammountGroup.touched" class="text-danger">
+              Debe completar ambos campos: moneda y monto.
+            </div>
+          </div>
+  
+          <div class="col-12 d-flex justify-content-center justify-content-lg-end">
+            <button type="submit" class="btn btn-primary" [disabled]="discountForm.invalid">
+              {{ btnTxt }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

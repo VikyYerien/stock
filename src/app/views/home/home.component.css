@@ -1,0 +1,7 @@
+.quote-container {
+    width: 600px;
+}
+  
+blockquote {
+    font-style: italic;
+}

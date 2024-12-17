@@ -1,0 +1,172 @@
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input
+                            type="text"
+                            id="name"
+                            class="form-control"
+                            formControlName="name"
+                            [ngClass]="{ 'is-invalid': f['name'].invalid && f['name'].touched }"
+                            />
+                            <div *ngIf="f['name'].invalid && f['name'].touched" class="invalid-feedback">
+                            El nombre es obligatorio y debe tener al menos 2 caracteres.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <!-- Apellido -->
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Apellido</label>
+                            <input
+                            type="text"
+                            id="lastName"
+                            class="form-control"
+                            formControlName="lastName"
+                            [ngClass]="{ 'is-invalid': f['lastName'].invalid && f['lastName'].touched }"
+                            />
+                            <div *ngIf="f['lastName'].invalid && f['lastName'].touched" class="invalid-feedback">
+                            El apellido es obligatorio y debe tener al menos 2 caracteres.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-7">
+                        <!-- Identificador -->
+                        <div class="mb-3">
+                            <label class="form-label">Documento</label>
+                            <div class="input-group">
+                              <select
+                                class="form-select"
+                                formControlName="identifyerType"
+                                [ngClass]="{ 'is-invalid': f['identifyerType'].invalid && f['identifyerType'].touched }"
+                              >
+                                <option value="" disabled>Selecciona el tipo</option>
+                                <option *ngFor="let type of identifyerTypes" [value]="type">{{ type }}</option>
+                              </select>
+                          
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="identifyerValue"
+                                placeholder="Ingresa el valor"
+                                [ngClass]="{ 'is-invalid': f['identifyerValue'].invalid && f['identifyerValue'].touched }"
+                              />
+                            </div>
+                          
+                            <!-- Mensajes de error en una fila -->
+                            <div class="d-flex gap-3">
+                              <div *ngIf="f['identifyerType'].invalid && f['identifyerType'].touched" class="invalid-feedback d-block">
+                                El tipo de documento es obligatorio.
+                              </div>
+                              <div *ngIf="f['identifyerValue'].invalid && f['identifyerValue'].touched" class="invalid-feedback d-block">
+                                El valor del documento es obligatorio.
+                              </div>
+                            </div>
+                          </div>
+                          
+                    </div>
+                    <div class="col-12 col-lg-5">
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                                <select
+                                    class="form-select"
+                                    formControlName="role"
+                                    [ngClass]="{ 'is-invalid': f['role'].invalid && f['role'].touched }"
+                                >
+                                    <option value="" disabled>Selecciona el rol</option>
+                                    <option *ngFor="let type of roles" [value]="type">{{ type }}</option>
+                                </select>
+                            <div *ngIf="f['role'].invalid && f['role'].touched" class="invalid-feedback">
+                            El rol del usuario es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12 col-lg-5">
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input
+                              type="text"
+                              id="phone"
+                              class="form-control"
+                              formControlName="phone"
+                              placeholder="+123456789"
+                              [ngClass]="{ 'is-invalid': f['phone'].invalid && f['phone'].touched }"
+                            />
+                            <div *ngIf="f['phone'].invalid && f['phone'].touched" class="invalid-feedback">
+                              El número de teléfono debe tener entre 7 y 15 dígitos y puede incluir el símbolo '+'.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-7">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            formControlName="email"
+                            [ngClass]="{ 'is-invalid': f['email'].invalid && f['email'].touched }"
+                            />
+                            <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback">
+                            Ingresa un email válido.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contraseña -->
+                <div class="mb-3" [ngClass]="{'d-none': hiddenPasswordInput}">
+                    <label for="passWord" class="form-label">Contraseña</label>
+                    <input
+                    type="password"
+                    id="passWord"
+                    class="form-control"
+                    formControlName="passWord"
+                    [ngClass]="{ 'is-invalid': f['passWord'].invalid && f['passWord'].touched }"
+                    />
+                    <div *ngIf="f['passWord'].invalid && f['passWord'].touched" class="invalid-feedback">
+                    La contraseña debe tener al menos 6 caracteres.
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <!-- Genero -->
+                        <div class="mb-3">
+                            <label class="form-label">Género</label>
+                                <select
+                                    class="form-select"
+                                    formControlName="gender"
+                                    [ngClass]="{ 'is-invalid': f['gender'].invalid && f['gender'].touched }"
+                                >
+                                    <option value="" disabled>Selecciona el género</option>
+                                    <option *ngFor="let gender of genderTypes" [value]="gender">{{ gender }}</option>
+                                </select>
+                            <div *ngIf="f['gender'].invalid && f['gender'].touched" class="invalid-feedback">
+                            El género es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <!-- Botón de Enviar -->
+                <div class="col-12 d-flex justify-content-center justify-content-lg-end">
+                    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+                        {{btnTxt}}
+                    </button>
+                </div>
+            </form>
+        </div>          
+    </div>
+</div>

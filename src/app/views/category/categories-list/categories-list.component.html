@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-10 offset-lg-1">
+            <!-- users-list.component.html -->
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-6 col-lg-9">
+                        <h2 class="my-2 mt-lg-0 mb-lg-3">Lista de Categorías</h2>
+                    </div>
+                    <div class="col-6 col-lg-3 d-flex justify-content-end my-2 my-lg-0">
+                        <div>
+                            <a href="category/create" class="btn btn-primary">Nueva Categoría <i class="bi bi-plus-lg"></i></a>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Campo de búsqueda -->
+                <div class="mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar por nombre de categoría"
+                    [(ngModel)]="searchTerm"
+                    (input)="filterCategories()"
+                />
+                </div>
+            
+                <!-- Mensaje de carga y error -->
+                <div *ngIf="loading" class="alert alert-info">Cargando categorías...</div>
+                <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            
+                <!-- Lista de categorias filtradas -->
+                <ul class="list-group" *ngIf="!loading && filteredCategories.length > 0">
+                    <li *ngFor="let category of filteredCategories" class="list-group-item">
+                        <div class="row">
+
+                            <div class="col-10">
+                                <h5 class="mb-1">{{ category.name }}</h5>
+                                <p class="mb-0 text-body-secondary">{{ category.description }}</p>  
+                            </div>
+                            <div class="col-2">
+                                <div class="row mt-0">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button 
+                                        (click)="navigate(category._id)"
+                                        class="btn btn-lg p-0 me-3 fs-3 text-primary" 
+                                        type="button" 
+                                        aria-expanded="false">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button 
+                                        (click)="deleteCategory(category._id)"
+                                        class="btn btn-lg p-0 fs-3 text-primary" 
+                                        type="button" 
+                                        aria-expanded="false">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            
+                <!-- Mensaje si no hay usuarios -->
+                <div *ngIf="!loading && filteredCategories.length === 0" class="alert alert-warning">
+                No se encontraron categorías.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  

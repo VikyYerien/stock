@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-10 offset-lg-1">
+            <!-- users-list.component.html -->
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-6 col-lg-9">
+                        <h2 class="my-2 mt-lg-0 mb-lg-3">Lista de Descuentos</h2>
+                    </div>
+                    <div class="col-6 col-lg-3 d-flex justify-content-end my-2 my-lg-0">
+                        <div>
+                            <a href="discount/create" class="btn btn-primary">Nuevo Descuento <i class="bi bi-plus-lg"></i></a>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Campo de búsqueda -->
+                <div class="mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar por nombre de descuento"
+                    [(ngModel)]="searchTerm"
+                    (input)="filterDiscounts()"
+                />
+                </div>
+            
+                <!-- Mensaje de carga y error -->
+                <div *ngIf="loading" class="alert alert-info">Cargando categorías...</div>
+                <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            
+                <!-- Lista de categorias filtradas -->
+                <ul class="list-group" *ngIf="!loading && filteredDiscounts.length > 0">
+                    <li *ngFor="let discount of filteredDiscounts" class="list-group-item">
+                        <div class="row">
+
+                            <div class="col-10">
+                                <h5 class="mb-1">{{ discount.name }}</h5>
+                                <p class="mb-0 text-body-secondary">{{ discount.description }}</p>
+                                <p *ngIf="discount.percentage" class="mb-0 text-body-secondary">Porcentage: {{ discount.percentage }}</p>
+                                <p *ngIf="discount.ammount" class="mb-0 text-body-secondary">Monto: {{ discount.ammount.currency + discount.ammount.ammount }}</p>  
+                            </div>
+                            <div class="col-2">
+                                <div class="row mt-0">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button 
+                                        (click)="navigate(discount._id)"
+                                        class="btn btn-lg p-0 me-3 fs-3 text-primary" 
+                                        type="button" 
+                                        aria-expanded="false">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button 
+                                        (click)="deleteDiscount(discount._id)"
+                                        class="btn btn-lg p-0 fs-3 text-primary" 
+                                        type="button" 
+                                        aria-expanded="false">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            
+                <!-- Mensaje si no hay usuarios -->
+                <div *ngIf="!loading && filteredDiscounts.length === 0" class="alert alert-warning">
+                No se encontraron descuentos.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  

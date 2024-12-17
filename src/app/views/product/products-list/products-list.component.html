@@ -1,0 +1,177 @@
+<div class="container-fluid pt-3 pt-lg-0">
+  <div class="row mt-4">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-12 d-flex align-items-center mb-0 mb-lg-3">
+                <h2 class="mb-0">Productos</h2>
+                <small class="text-muted ms-1 ms-lg-3 mt-2 d-none d-lg-block">{{this.products.length}} artículos encontrados.</small>
+              </div>
+              <div class="col-12 d-block d-lg-none">
+                <small class="text-muted ms-1 ms-lg-3 mt-2">{{this.products.length}} artículos encontrados.</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 d-flex justify-content-end py-3 py-lg-2">
+            <a href="product/create" class="btn btn-primary">Nuevo Producto <i class="bi bi-plus-lg"></i></a>
+          </div>
+        </div>
+        <!-- Campo de búsqueda -->
+        <div class="mb-3 row bg-secondary bg-gradient py-2 ">
+          <div class="col-4 col-lg-4">
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por nombre del producto"
+            [(ngModel)]="searchTerm"
+            (input)="filterProducts()"
+            />
+          </div>
+          <div class="col-4 col-lg-3">
+            <select 
+            id="categoryId" 
+            class="form-select"
+            [(ngModel)]="searchTerm2" 
+            (change)="filterProductsByCategory()"
+            >
+              <option value="" disabled>Filtrar por categorías</option>
+              <option value="all">Todas</option>
+              <option *ngFor="let category of categories" [value]="category._id">{{ category.name }}</option>
+            </select>
+          </div>
+          <div class="col-4 col-lg-5 d-flex justify-content-end">
+            <div class="btn-group">
+              <button 
+              (click)="this.tableView = false"
+              class="btn btn-primary py-1 px-2" 
+              [ngClass]="{'active': !this.tableView}"
+              type="button" 
+              aria-expanded="false">
+                  <i class="bi bi-grid-3x3-gap-fill"></i>
+              </button>
+              <button 
+              (click)="this.tableView = true"
+              class="btn btn-primary py-1 px-2" 
+              type="button" 
+              [ngClass]="{'active': this.tableView}"
+              aria-expanded="false">
+                  <i class="bi bi-list"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-12">
+        <!-- Mensaje de carga y error -->
+        <div *ngIf="loading" class="alert alert-info">Cargando productos...</div>
+        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+      </div>
+      <div *ngIf="this.tableView" class="col-12 overflow-auto">
+        <table class="table" *ngIf="!loading">
+          <thead>
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Stock</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Disponible</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts; index as i">
+              <th scope="row">{{ product.code }}</th>
+              <td>
+                <div class="row">
+                  <div class="col-12 col-lg-4 order-last order-lg-first">
+                    <img class="imgTable" [src]="product.imgUrls[0]" alt="imagen del producto">
+                  </div>
+                  <div class="col-12 col-lg-8">
+                    <h4>{{ product.name }}</h4>
+                    <p class="d-none d-lg-block">{{ product.description }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>{{ this.getCategory(product.categoryId) }}</td>
+              <td>{{ product.stock }}</td>
+              <td>{{ product.price.currency + ' ' +  product.price.ammount }}</td>
+              <td>
+                <div class="form-check form-switch">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="flexSwitchCheckDefault" 
+                    [(ngModel)]="product.available" 
+                    (change)="changeAvailability(product)">
+                </div>
+              </td>
+              <td>
+                <div class="col-12 d-flex justify-content-end">
+                  <button 
+                  (click)="navigate(product._id)"
+                  class="btn btn-lg p-0 me-3 fs-3 text-primary" 
+                  type="button" 
+                  aria-expanded="false">
+                      <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button 
+                  (click)="deleteProduct(product._id)"
+                  class="btn btn-lg p-0 fs-3 text-primary" 
+                  type="button" 
+                  aria-expanded="false">
+                      <i class="bi bi-trash-fill"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12" *ngIf="!this.tableView">
+        <div class="row">
+          <div 
+          class="col-12 col-md-6 col-lg-4 p-2" 
+          *ngFor="let product of products">
+            <div class="card h-100">
+              <img 
+                [src]="product.imgUrls[0] || 'assets/default-product.jpg'" 
+                class="card-img-top" 
+                alt="{{ product.name }}">
+              <div class="card-header text-center">
+                <h5>{{ product.name }}</h5>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  <strong>Lote:</strong> {{ product.batchNumber.value }}
+                </p>
+                <p class="card-text">
+                  <strong>Código:</strong> {{ product.code }}
+                </p>
+                <p class="card-text">
+                  <strong>Categoría:</strong> {{ this.getCategory(product.categoryId) }}
+                </p>
+                <p class="card-text">
+                  <strong>Precio:</strong> {{ product.price.ammount }} {{ product.price.currency }}
+                </p>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item" *ngFor="let discount of product.discounts">
+                    Descuento: {{ discount.percentage }}%
+                  </li>
+                </ul>
+                <p class="card-text mt-2">
+                  <strong>Stock:</strong> {{ product.stock }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mensaje si no hay productos -->
+      <div *ngIf="products.length === 0" class="alert alert-warning mx-2">
+        No se encontraron productos.
+      </div>
+  </div>
+</div>

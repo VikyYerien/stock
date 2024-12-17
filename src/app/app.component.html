@@ -1,0 +1,134 @@
+<!-- Navbar Superior -->
+<nav *ngIf="isLogguedIn()" class="navbar navbar-expand-lg navbar-light bg-light fixed-top py-3">
+    <div class="px-2 col-6 d-flex justify-content-start">
+        <button
+        class="btn btn-outline-secondary me-2 d-lg-none"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#sidebarMenu"
+        aria-controls="sidebarMenu"
+        >
+            <i class="bi bi-list"></i>
+        </button>
+        <a class="navbar-brand ms-3" href="#">Mi Aplicación</a>
+    </div>
+    <div class="px-2 col-6 d-flex justify-content-end">
+        <a href="#" class="btn btn-lg p-0 me-3 text-primary position-relative">
+            <i class="bi bi-bell-fill fs-3"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5<span class="visually-hidden">nuevas notificaciones</span></span>
+        </a>
+        <div class="dropdown">
+            <button 
+            class="btn btn-lg p-0 me-3 fs-3 text-primary" 
+            type="button" 
+            id="userDropdown" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>      
+    </div>
+</nav>
+  
+  <!-- Barra Lateral Fija para pantallas grandes -->
+  <div *ngIf="isLogguedIn()"
+    class="d-none d-lg-flex flex-column bg-dark text-white vh-100 fixed-top pt-lg-3 px-2 sidebar"
+  >
+    <h5 class="ms-3">Usuarios</h5>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-4">
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Inicio'}" class="nav-link text-white" href="#" (click)="this.setMenu('Inicio')">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Usuarios'}" class="nav-link text-white" href="users" (click)="this.setMenu('Usuarios')">Usuarios</a>
+        </li>
+    </ul>
+    <h5 class="ms-3">Productos</h5>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-4">
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Productos'}" class="nav-link text-white" href="products" (click)="this.setMenu('Productos')">Productos</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Categorias'}" class="nav-link text-white" href="categories" (click)="this.setMenu('Categorias')">Categorías</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Descuentos'}" class="nav-link text-white" href="discounts" (click)="this.setMenu('Descuentos')">Descuentos</a>
+        </li>
+    </ul>
+    <h5 class="ms-3">Ventas</h5>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-4">
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Pedidos'}" class="nav-link text-white" href="#" (click)="this.setMenu('Pedidos')">Pedidos</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="{'active': this.getMenu() == 'Caja'}" class="nav-link text-white" href="#" (click)="this.setMenu('Caja')">Caja</a>
+        </li>
+    </ul>
+  </div>
+  
+  <!-- Offcanvas para pantallas pequeñas -->
+  <div
+    class="offcanvas offcanvas-start bg-dark pt-lg-3 px-2 text-white sidebar"
+    tabindex="-1"
+    id="sidebarMenu"
+    aria-labelledby="sidebarMenuLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarMenuLabel">Navegación</h5>
+      <button
+        type="button"
+        class="btn-close btn-close-white text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <hr>
+    <div class="offcanvas-body">
+        <h5 class="ms-3">Usuarios</h5>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-4">
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Inicio'}" class="nav-link text-white" href="#" (click)="this.setMenu('Inicio')">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Usuarios'}" class="nav-link text-white" href="users" (click)="this.setMenu('Usuarios')">Usuarios</a>
+            </li>
+        </ul>
+        <h5 class="ms-3">Productos</h5>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-4">
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Productos'}" class="nav-link text-white" href="products" (click)="this.setMenu('Productos')">Productos</a>
+            </li>
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Categorias'}" class="nav-link text-white" href="categories" (click)="this.setMenu('Categorias')">Categorías</a>
+            </li>
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Descuentos'}" class="nav-link text-white" href="discounts" (click)="this.setMenu('Descuentos')">Descuentos</a>
+            </li>
+        </ul>
+        <h5 class="ms-3">Ventas</h5>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-4">
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Pedidos'}" class="nav-link text-white" href="#" (click)="this.setMenu('Pedidos')">Pedidos</a>
+            </li>
+            <li class="nav-item">
+                <a [ngClass]="{'active': this.getMenu() == 'Caja'}" class="nav-link text-white" href="#" (click)="this.setMenu('Caja')">Caja</a>
+            </li>
+        </ul>
+    </div>
+  </div>
+  
+  <!-- Contenido Principal -->
+  <div class="main-content container-fluid mt-5 pt-lg-3">
+    <router-outlet></router-outlet>
+  </div>
+  
